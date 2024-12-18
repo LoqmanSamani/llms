@@ -3,7 +3,7 @@ import tiktoken
 
 
 
-"""Implement GPT-2 models"""
+"""Implements GPT-2 models"""
 
 
 
@@ -212,10 +212,13 @@ class MultiHeadAttention(torch.nn.Module):
 
 class Loss(torch.nn.Module):
 
-    def __init__(self, model, device):
+    def __init__(self, model, device, temperature=0.0, top_k=None, eos_id=False):
         super().__init__()
         self.model = model
         self.device = device
+        self.temperature = temperature
+        self.top_k = top_k
+        self.eos_id = eos_id # stops generating early if end-of-sequence token is encountered.
 
     def calc_loss_loader(self, data_loader, num_batches):
 
@@ -272,21 +275,38 @@ class Loss(torch.nn.Module):
 
         return train_loss, val_loss
 
-
-    def generate_text_simple(self, idx, max_new_tokens, context_size):
+    def generate(self, idx, max_new_tokens, context_size):
 
         for _ in range(max_new_tokens):
             idx_cond = idx[:, -context_size:]
 
             with torch.no_grad():
                 logits = self.model(idx_cond)
-
             logits = logits[:, -1, :]
-            probas = torch.softmax(logits, dim=-1)
-            idx_next = torch.argmax(probas, dim=-1, keepdim=True)
+
+            if self.top_k is not None:
+                top_logits, _ = torch.topk(logits, self.top_k)
+                min_val = top_logits[:, -1]
+                logits = torch.where(
+                    condition=logits < min_val,
+                    input=torch.tensor(float('-inf')).to(logits.device),
+                    other=logits
+                )
+
+            if self.temperature > 0.0:
+                logits = logits / self.temperature
+                probs = torch.softmax(logits, dim=-1)
+                idx_next = torch.multinomial(probs, num_samples=1)
+
+            else:
+                idx_next = torch.argmax(logits, dim=-1, keepdim=True)
+
+            if idx_next == self.eos_id:
+                break
             idx = torch.cat((idx, idx_next), dim=1)
 
         return idx
+
 
     def text_to_token_ids(self, text, tokenizer):
 
@@ -312,7 +332,7 @@ class Loss(torch.nn.Module):
         ).to(self.device)
 
         with torch.no_grad():
-            token_ids = self.generate_text_simple(
+            token_ids = self.generate(
                 idx=encoded,
                 max_new_tokens=50,
                 context_size=context_size
@@ -544,6 +564,9 @@ train = Train(
 )
 
 train()
+
+
+
 """
 Ep 1 (Step 000000): Train loss 9.975, Val loss 9.935
 Ep 1 (Step 000005): Train loss 8.073, Val loss 8.287
@@ -580,10 +603,14 @@ Every effort moves you?"  "Yes--quite insensible to the irony. She wanted him. "
 total_params = sum(p.numel() for p in model.parameters())
 print(f"Total number of parameters: {total_params:,}")
 
-"""Total number of parameters: 163,009,536"""
 
+"""Total number of parameters: 163,009,536"""
+"""
 for name, param in model.state_dict().items():
     print(name)
+"""
+
+
 """
 token_embed.weight
 position_embed.weight
