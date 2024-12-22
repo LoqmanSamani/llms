@@ -486,7 +486,7 @@ class Train(torch.nn.Module):
 #                                    TRAIN A MODEL                                            #
 ###############################################################################################
 
-
+"""
 GPT_CONFIG_124M = {
     "vocab_size": 50257,
     "context_length": 256,
@@ -564,7 +564,7 @@ train = Train(
 )
 
 train()
-
+"""
 
 
 """
@@ -599,10 +599,10 @@ Every effort moves you?"  "Yes--quite insensible to the irony. She wanted him. "
 
 """
 
-
+"""
 total_params = sum(p.numel() for p in model.parameters())
 print(f"Total number of parameters: {total_params:,}")
-
+"""
 
 """Total number of parameters: 163,009,536"""
 """
