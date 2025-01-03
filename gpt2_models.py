@@ -310,7 +310,7 @@ class Loss(torch.nn.Module):
 
     def text_to_token_ids(self, text, tokenizer):
 
-        encoded = tokenizer.encode(text, allowed_special={'<|endoftext|>'})
+        encoded = tokenizer.encode(text)
         encoded_tensor = torch.tensor(encoded).unsqueeze(0)
 
         return encoded_tensor
