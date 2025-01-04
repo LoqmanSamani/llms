@@ -20,7 +20,7 @@ class GPT2Model(torch.nn.Module):
         self.token_embed = torch.nn.Embedding(
             num_embeddings=vocab_size,
             embedding_dim=embed_dim
-        )
+        ) # (size of the dictionary of embeddings, the size of each embedding vector)
         self.position_embed = torch.nn.Embedding(
             num_embeddings=context_length,
             embedding_dim=embed_dim
