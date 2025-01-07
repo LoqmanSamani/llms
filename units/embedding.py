@@ -51,8 +51,7 @@ class Embedding(torch.nn.Module):
             Tensor: A tensor of shape (seq_length, embedding_dimension) representing positional encodings.
         """
         # Generate positional indices for the sequence (0, 1, 2, ..., seq_length-1).
-        positional_indices = torch.arange(token_ids.shape[-1], device=token_ids.device)
-
+        positional_indices = torch.arange(token_ids.shape[-1], device=token_ids.device).unsqueeze(0)
         # Look up the learnable positional encodings for these indices.
         return self.pos_encod(positional_indices)
 

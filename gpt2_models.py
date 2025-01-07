@@ -47,9 +47,8 @@ class GPT2Model(torch.nn.Module):
 
         batch_size, seq_length = in_idx.shape
         token_embeds = self.token_embed(in_idx)
-        position_embeds = self.position_embed(
-                    torch.arange(seq_length, device=in_idx.device)
-                )
+        positions = torch.arange(seq_length, device=in_idx.device).unsqueeze(0)
+        position_embeds = self.position_embed(positions)
         x = token_embeds + position_embeds
         x = self.dropout(x)
         x = self.transformer_blocks(x)
@@ -486,7 +485,7 @@ class Train(torch.nn.Module):
 #                                    TRAIN A MODEL                                            #
 ###############################################################################################
 
-"""
+
 GPT_CONFIG_124M = {
     "vocab_size": 50257,
     "context_length": 256,
@@ -564,7 +563,7 @@ train = Train(
 )
 
 train()
-"""
+
 
 
 """
@@ -599,17 +598,16 @@ Every effort moves you?"  "Yes--quite insensible to the irony. She wanted him. "
 
 """
 
-"""
+
 total_params = sum(p.numel() for p in model.parameters())
 print(f"Total number of parameters: {total_params:,}")
-"""
+
 
 """Total number of parameters: 163,009,536"""
-"""
+
+
 for name, param in model.state_dict().items():
     print(name)
-"""
-
 
 """
 token_embed.weight
