@@ -1,7 +1,6 @@
 import torch
 from transformer import Transformer
 from embedding import Embedding
-from tokenize_ import Tokenizer
 from layer_normalization import LayerNorm
 
 
@@ -9,23 +8,16 @@ from layer_normalization import LayerNorm
 class GPT2(torch.nn.Module):
     def __init__(
             self,
-            input_dimension=512,
-            output_dimension=512,
-            num_heads=8,
-            context_length=512,
+            input_dimension=1024,
+            output_dimension=1024,
+            num_heads=16,
+            context_length=1024,
             dropout_rate=0.1,
             qkv_bias=False,
             layer_norm_epsilon=1e-5,
             ff_scaling_value=4,
-            num_transformers=12,
-            vocab_text=None,
-            create_vocab=False,
-            encoding="gpt2",
-            unk=False,
-            end_of_text=False,
-            vocab_start=1,
-            vocabulary_size=512,
-            embedding_dimension=512,
+            num_transformers=24,
+            vocabulary_size=50257,
             use_custom=False
 
     ):
@@ -45,17 +37,9 @@ class GPT2(torch.nn.Module):
                 ff_scaling_value=ff_scaling_value
             ) for _ in range(num_transformers)]
         )
-        self.tokenizer = Tokenizer(
-            vocab_text=vocab_text,
-            create_vocab=create_vocab,
-            encoding=encoding,
-            unk=unk,
-            end_of_text=end_of_text,
-            vocab_start=vocab_start
-        )
         self.embedding = Embedding(
             vocabulary_size=vocabulary_size,
-            embedding_dimension=embedding_dimension,
+            embedding_dimension=input_dimension,
             context_length=context_length
         )
         self.final_layer_norm = LayerNorm(
@@ -69,19 +53,18 @@ class GPT2(torch.nn.Module):
         )
         self.dropout = torch.nn.Dropout(p=dropout_rate)
 
-    def forward(self, text):
+    def forward(self, x):
 
-        tokens = self.tokenizer.encode(
-            text=text,
-            use_custom=self.use_custom
-        )
-        tokens = self.embedding(tokens)
-        tokens = self.dropout(tokens)
-        tokens = self.transformers(tokens)
-        tokens = self.final_layer_norm(tokens)
-        logits = self.linear_output(tokens)
+        x = self.embedding(x)
+        x = self.dropout(x)
+        x = self.transformers(x)
+        x = self.final_layer_norm(x)
+        logits = self.linear_output(x)
 
         return logits
+
+
+
 
 
 

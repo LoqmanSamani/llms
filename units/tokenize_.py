@@ -93,52 +93,7 @@ class Tokenizer:
 
 
 
-# Sample text for creating a vocabulary
-vocab_text = "Hello, world! This is a tokenizer test. Can it handle unknown tokens?"
-test_text = "Hello, tokenizer! Testing unknown words and end of text."
 
-# Instantiate the Tokenizer class with a custom vocabulary
-custom_tokenizer = Tokenizer(
-    vocab_text=vocab_text,
-    create_vocab=True,
-    unk=True,  # Include <|unk|> for unknown tokens
-    end_of_text=True,  # Include <|endoftext|>
-    vocab_start=1  # Start indexing from 1
-)
-
-
-
-
-# Example 1: Custom Vocabulary Tokenization
-print("Custom Vocabulary:")
-print("Vocabulary:", custom_tokenizer.vocab)
-"""
-Vocabulary: {
-    '!': 1, ',': 2, '.': 3, '?': 4, 'Can': 5, 'Hello': 6,
-    'This': 7, 'a': 8, 'handle': 9, 'is': 10, 'it': 11,
-    'test': 12, 'tokenizer': 13, 'tokens': 14, 'unknown': 15,
-    'world': 16, '<|unk|>': 17, '<|endoftext|>': 18
-    }
-"""
-
-encoded_ids_custom = custom_tokenizer.encode(test_text, use_custom=True)
-print("Encoded IDs:", encoded_ids_custom)
-"""Encoded IDs: [6, 2, 13, 1, 17, 15, 17, 17, 17, 17, 17, 3]"""
-
-decoded_text_custom = custom_tokenizer.decode(encoded_ids_custom, use_custom=True)
-print("Decoded Text:", decoded_text_custom)
-"""Decoded Text: Hello , tokenizer ! <|unk|> unknown <|unk|> <|unk|> <|unk|> <|unk|> <|unk|> ."""
-
-
-# Example 2: Pre-trained Encoding (e.g., 'gpt2')
-pretrained_tokenizer = Tokenizer(encoding="gpt2")
-print("\nPre-trained GPT-2 Encoding:")
-encoded_ids_gpt2 = pretrained_tokenizer.encode(test_text)
-print("Encoded IDs:", encoded_ids_gpt2)
-"""Encoded IDs: [15496, 11, 11241, 7509, 0, 23983, 6439, 2456, 290, 886, 286, 2420, 13]"""
-decoded_text_gpt2 = pretrained_tokenizer.decode(encoded_ids_gpt2)
-print("Decoded Text:", decoded_text_gpt2)
-"""Decoded Text: Hello, tokenizer! Testing unknown words and end of text."""
 
 
 

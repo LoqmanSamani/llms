@@ -1,5 +1,5 @@
 import torch
-from tokenize import Tokenizer
+from tokenize_ import Tokenizer
 
 
 class DataLoader(torch.utils.data.DataLoader):
@@ -8,7 +8,6 @@ class DataLoader(torch.utils.data.DataLoader):
 
     Args:
         data (str): Input text data to be tokenized and processed into datasets.
-        dataset (Dataset): A dataset instance used for batching.
         tokenizer (Tokenizer): An instance of the Tokenizer class for text encoding.
         batch_size (int): Number of samples per batch.
         max_length (int): Maximum length of a sequence in tokens.
@@ -25,13 +24,11 @@ class DataLoader(torch.utils.data.DataLoader):
         use_custom (bool, optional): Whether to use custom vocabulary for tokenization. Defaults to False.
     """
 
-    def __init__(self, data, dataset, tokenizer, batch_size, max_length, stride, shuffle, drop_last, num_workers,
+    def __init__(self, data, batch_size, max_length, stride, shuffle, drop_last, num_workers,
                  vocab_text=None, create_vocab=False, encoding="gpt2", unk=False, end_of_text=False, vocab_start=1,
                  use_custom=False):
 
         self.data = data
-        self.dataset = dataset
-        self.tokenizer = tokenizer
         self.batch_size = batch_size
         self.max_length = max_length
         self.stride = stride
