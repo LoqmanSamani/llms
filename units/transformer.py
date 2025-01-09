@@ -55,38 +55,3 @@ class Transformer(torch.nn.Module):
         x = x + shortcut
 
         return x
-
-
-
-# Hyperparameters
-batch_size = 2  # Number of sequences in a batch
-context_length = 512  # Length of each sequence
-input_dimension = 512  # Embedding dimension
-
-# Instantiate the Transformer
-model = Transformer(
-    input_dimension=input_dimension,
-    output_dimension=input_dimension,  # Typically the same as input_dimension
-    num_heads=8,
-    context_length=context_length,
-    dropout_rate=0.1,
-    qkv_bias=True,
-    layer_norm_epsilon=1e-5,
-    ff_scaling_value=4
-)
-
-# Create dummy input tensor
-# Shape: (batch_size, context_length, input_dimension)
-dummy_input = torch.randn(batch_size, context_length, input_dimension)
-
-# Run the input through the model
-output = model(dummy_input)
-
-# Print output shape to confirm it's correct
-print(f"Input shape: {dummy_input.shape}")
-print(f"Output shape: {output.shape}")
-
-"""
-Input shape: torch.Size([2, 512, 512])
-Output shape: torch.Size([2, 512, 512])
-"""
