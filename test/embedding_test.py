@@ -23,4 +23,6 @@ def test_embedding_layer():
     print("Embedding test passed!")
 
 
-test_embedding_layer()
+
+if __name__ == "__main__":
+    test_embedding_layer()

@@ -438,6 +438,10 @@ class Train(torch.nn.Module):
 
         train_losses, val_losses, track_tokens_seen = [], [], []
         tokens_seen, global_step = 0, -1
+        #  tokens_seen: Cumulative count of tokens processed throughout training
+        # track_tokens_seen:  List storing tokens_seen snapshots at evaluation intervals
+        # global_step: tracks the total number of steps (batch processing iterations),
+                     # starting from -1 to align with logic
 
         for epoch in range(self.num_epochs):
             self.model.train()

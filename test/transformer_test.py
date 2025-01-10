@@ -26,4 +26,6 @@ def test_transformer():
     print(f"Test passed. Output shape: {output.shape}")
 
 
-test_transformer()
+
+if __name__ == "__main__":
+    test_transformer()

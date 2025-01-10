@@ -25,6 +25,12 @@ class GPT2(torch.nn.Module):
         super().__init__()
 
         self.use_custom = use_custom
+
+        self.embedding = Embedding(
+            vocabulary_size=vocabulary_size,
+            embedding_dimension=input_dimension,
+            context_length=context_length
+        )
         self.transformers = torch.nn.Sequential(
             *[Transformer(
                 input_dimension=input_dimension,
@@ -36,11 +42,6 @@ class GPT2(torch.nn.Module):
                 layer_norm_epsilon=layer_norm_epsilon,
                 ff_scaling_value=ff_scaling_value
             ) for _ in range(num_transformers)]
-        )
-        self.embedding = Embedding(
-            vocabulary_size=vocabulary_size,
-            embedding_dimension=input_dimension,
-            context_length=context_length
         )
         self.final_layer_norm = LayerNorm(
             embedding_dimension=input_dimension,

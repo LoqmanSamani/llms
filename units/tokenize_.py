@@ -88,15 +88,3 @@ class Tokenizer:
                 tokenizer = tiktoken.get_encoding(self.encoding)
                 return tokenizer.decode(ids)
             raise ValueError(f"Encoding '{self.encoding}' is not valid.")
-
-
-
-
-
-
-
-
-
-
-
-

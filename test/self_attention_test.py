@@ -19,4 +19,6 @@ def test_multihead_attention():
 
     print(f"Output shape is as expected: {output.shape}")
 
-test_multihead_attention()
+
+if __name__ == "__main__":
+    test_multihead_attention()

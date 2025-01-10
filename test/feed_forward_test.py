@@ -27,4 +27,7 @@ def test_feedforward():
 
     print("FeedForward test passed!")
 
-test_feedforward()
+
+
+if __name__ == "__main__":
+    test_feedforward()

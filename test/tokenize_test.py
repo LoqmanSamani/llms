@@ -56,5 +56,7 @@ def test_tokenizer_pretrained_gpt2():
     print("Pre-trained GPT-2 tokenizer test passed!")
 
 
-test_tokenizer_custom_vocab()
-test_tokenizer_pretrained_gpt2()
+
+if __name__ == "__main__":
+    test_tokenizer_custom_vocab()
+    test_tokenizer_pretrained_gpt2()

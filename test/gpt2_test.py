@@ -30,4 +30,7 @@ def test_gpt2_model():
 
     print(f"Logits shape is as expected: {logits.shape}")
 
-test_gpt2_model()
+
+
+if __name__ == "__main__":
+    test_gpt2_model()
