@@ -75,29 +75,3 @@ class GeluActivation(torch.nn.Module):
         # Applying the GELU activation function using the formula
         a = 0.5 * x * (1 + torch.tanh(torch.sqrt(torch.tensor(2 / math.pi)) * (x + 0.044715 * torch.pow(x, 3))))
         return a
-
-
-
-# Example input
-batch_size = 2
-sequence_length = 5
-embedding_dimension = 512  # Embedding dimension
-scaling_value = 4  # Scaling value for the hidden layer size
-
-# Create some random input tensor of shape (batch_size, sequence_length, embedding_dimension)
-input_tensor = torch.randn(batch_size, sequence_length, embedding_dimension)
-
-# Instantiate the FeedForward model with the embedding dimension and scaling value
-feedforward = FeedForward(embedding_dimension, scaling_value=scaling_value)
-
-# Forward pass through the FeedForward network
-output_tensor = feedforward(input_tensor)
-
-# Print the shape of the input and output tensors to check the transformation
-print(f"Input tensor shape: {input_tensor.shape}")  # Expected: (2, 5, 512)
-print(f"Output tensor shape: {output_tensor.shape}")  # Expected: (2, 5, 512)
-
-"""
-Input tensor shape: torch.Size([2, 5, 512])
-Output tensor shape: torch.Size([2, 5, 512])
-"""
