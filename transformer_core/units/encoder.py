@@ -1,8 +1,8 @@
 import torch
-from llms.transformer_core.units.attention import MultiHeadAttention as mha
+from attention import MultiHeadAttention as mha
 from feedforward import FeedForward as ff
 from layer_norm import LayerNorm as ln
-from llms.transformer_core.units.embedding import Embedding as embed
+from embedding import Embedding as embed
 
 
 
